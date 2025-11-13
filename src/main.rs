@@ -10,14 +10,11 @@ pub struct Foo {
 
 unsafe extern "C" {
     fn process(a: *mut Foo, b: *mut Foo);
+    fn process_restricted(a: *mut Foo, b: *mut Foo);
 }
 
 pub fn process_safe(a: &mut Foo, b: &mut Foo) {
     unsafe { process(a as *mut Foo, b as *mut Foo) }
-}
-
-unsafe extern "C" {
-    fn process_restricted(a: *mut Foo, b: *mut Foo);
 }
 
 fn main() {
