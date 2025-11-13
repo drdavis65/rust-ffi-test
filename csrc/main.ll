@@ -11,45 +11,46 @@ target triple = "x86_64-pc-linux-gnu"
 
 ; Function Attrs: nounwind uwtable
 define dso_local noundef i32 @main() local_unnamed_addr #0 {
-  %1 = alloca %struct.Foo, align 8
-  %2 = alloca %struct.Foo, align 8
-  call void @llvm.lifetime.start.p0(i64 16, ptr nonnull %1) #9
-  call void @llvm.memcpy.p0.p0.i64(ptr noundef nonnull align 8 dereferenceable(16) %1, ptr noundef nonnull align 8 dereferenceable(16) @__const.main.a, i64 16, i1 false)
-  call void @llvm.lifetime.start.p0(i64 16, ptr nonnull %2) #9
-  call void @llvm.memcpy.p0.p0.i64(ptr noundef nonnull align 8 dereferenceable(16) %2, ptr noundef nonnull align 8 dereferenceable(16) @__const.main.b, i64 16, i1 false)
-  %3 = getelementptr inbounds nuw i8, ptr %1, i64 8
-  %4 = getelementptr inbounds nuw i8, ptr %2, i64 8
-  %5 = tail call i32 (ptr, ...) @printf(ptr noundef nonnull dereferenceable(1) @.str, i32 noundef 5, double noundef 1.500000e+00, i32 noundef 2, double noundef 3.000000e+00)
-  call void @process_restricted(ptr noundef nonnull %1, ptr noundef nonnull %2) #9
-  %6 = load i32, ptr %1, align 8, !tbaa !5
-  %7 = load double, ptr %3, align 8, !tbaa !11
-  %8 = load i32, ptr %2, align 8, !tbaa !5
-  %9 = load double, ptr %4, align 8, !tbaa !11
-  %10 = call i32 (ptr, ...) @printf(ptr noundef nonnull dereferenceable(1) @.str, i32 noundef %6, double noundef %7, i32 noundef %8, double noundef %9)
-  %11 = call dereferenceable_or_null(128) ptr @calloc(i64 1, i64 128)
-  %12 = call noalias dereferenceable_or_null(128) ptr @malloc(i64 noundef 128) #10
-  store <4 x float> <float 0.000000e+00, float 0.000000e+00, float 1.000000e+00, float 2.000000e+00>, ptr %12, align 4, !tbaa !12
-  %13 = getelementptr inbounds nuw i8, ptr %12, i64 16
-  store <4 x float> <float 2.000000e+00, float 4.000000e+00, float 3.000000e+00, float 6.000000e+00>, ptr %13, align 4, !tbaa !12
-  %14 = getelementptr inbounds nuw i8, ptr %12, i64 32
-  store <4 x float> <float 4.000000e+00, float 8.000000e+00, float 5.000000e+00, float 1.000000e+01>, ptr %14, align 4, !tbaa !12
-  %15 = getelementptr inbounds nuw i8, ptr %12, i64 48
-  store <4 x float> <float 6.000000e+00, float 1.200000e+01, float 7.000000e+00, float 1.400000e+01>, ptr %15, align 4, !tbaa !12
-  %16 = getelementptr inbounds nuw i8, ptr %12, i64 64
-  store <4 x float> <float 8.000000e+00, float 1.600000e+01, float 9.000000e+00, float 1.800000e+01>, ptr %16, align 4, !tbaa !12
-  %17 = getelementptr inbounds nuw i8, ptr %12, i64 80
-  store <4 x float> <float 1.000000e+01, float 2.000000e+01, float 1.100000e+01, float 2.200000e+01>, ptr %17, align 4, !tbaa !12
-  %18 = getelementptr inbounds nuw i8, ptr %12, i64 96
-  store <4 x float> <float 1.200000e+01, float 2.400000e+01, float 1.300000e+01, float 2.600000e+01>, ptr %18, align 4, !tbaa !12
-  %19 = getelementptr inbounds nuw i8, ptr %12, i64 112
-  store <4 x float> <float 1.400000e+01, float 2.800000e+01, float 1.500000e+01, float 3.000000e+01>, ptr %19, align 4, !tbaa !12
-  call void @axpy_pts(i64 noundef 16, ptr noundef nonnull %11, ptr noundef nonnull %12, float noundef 5.000000e-01) #9
-  call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 dereferenceable(128) %11, i8 0, i64 128, i1 false)
-  call void @axpy_pts_restricted(i64 noundef 16, ptr noundef nonnull %11, ptr noundef nonnull %12, float noundef 5.000000e-01) #9
-  call void @free(ptr noundef %11) #9
-  call void @free(ptr noundef %12) #9
-  call void @llvm.lifetime.end.p0(i64 16, ptr nonnull %2) #9
-  call void @llvm.lifetime.end.p0(i64 16, ptr nonnull %1) #9
+entry:
+  %a = alloca %struct.Foo, align 8
+  %b = alloca %struct.Foo, align 8
+  call void @llvm.lifetime.start.p0(i64 16, ptr nonnull %a) #9
+  call void @llvm.memcpy.p0.p0.i64(ptr noundef nonnull align 8 dereferenceable(16) %a, ptr noundef nonnull align 8 dereferenceable(16) @__const.main.a, i64 16, i1 false)
+  call void @llvm.lifetime.start.p0(i64 16, ptr nonnull %b) #9
+  call void @llvm.memcpy.p0.p0.i64(ptr noundef nonnull align 8 dereferenceable(16) %b, ptr noundef nonnull align 8 dereferenceable(16) @__const.main.b, i64 16, i1 false)
+  %value = getelementptr inbounds nuw i8, ptr %a, i64 8
+  %value2 = getelementptr inbounds nuw i8, ptr %b, i64 8
+  %call = tail call i32 (ptr, ...) @printf(ptr noundef nonnull dereferenceable(1) @.str, i32 noundef 5, double noundef 1.500000e+00, i32 noundef 2, double noundef 3.000000e+00)
+  call void @process_restricted(ptr noundef nonnull %a, ptr noundef nonnull %b) #9
+  %0 = load i32, ptr %a, align 8, !tbaa !5
+  %1 = load double, ptr %value, align 8, !tbaa !11
+  %2 = load i32, ptr %b, align 8, !tbaa !5
+  %3 = load double, ptr %value2, align 8, !tbaa !11
+  %call7 = call i32 (ptr, ...) @printf(ptr noundef nonnull dereferenceable(1) @.str, i32 noundef %0, double noundef %1, i32 noundef %2, double noundef %3)
+  %calloc = call dereferenceable_or_null(128) ptr @calloc(i64 1, i64 128)
+  %call11 = call noalias dereferenceable_or_null(128) ptr @malloc(i64 noundef 128) #10
+  store <4 x float> <float 0.000000e+00, float 0.000000e+00, float 1.000000e+00, float 2.000000e+00>, ptr %call11, align 4, !tbaa !12
+  %arrayidx.2 = getelementptr inbounds nuw i8, ptr %call11, i64 16
+  store <4 x float> <float 2.000000e+00, float 4.000000e+00, float 3.000000e+00, float 6.000000e+00>, ptr %arrayidx.2, align 4, !tbaa !12
+  %arrayidx.4 = getelementptr inbounds nuw i8, ptr %call11, i64 32
+  store <4 x float> <float 4.000000e+00, float 8.000000e+00, float 5.000000e+00, float 1.000000e+01>, ptr %arrayidx.4, align 4, !tbaa !12
+  %arrayidx.6 = getelementptr inbounds nuw i8, ptr %call11, i64 48
+  store <4 x float> <float 6.000000e+00, float 1.200000e+01, float 7.000000e+00, float 1.400000e+01>, ptr %arrayidx.6, align 4, !tbaa !12
+  %arrayidx.8 = getelementptr inbounds nuw i8, ptr %call11, i64 64
+  store <4 x float> <float 8.000000e+00, float 1.600000e+01, float 9.000000e+00, float 1.800000e+01>, ptr %arrayidx.8, align 4, !tbaa !12
+  %arrayidx.10 = getelementptr inbounds nuw i8, ptr %call11, i64 80
+  store <4 x float> <float 1.000000e+01, float 2.000000e+01, float 1.100000e+01, float 2.200000e+01>, ptr %arrayidx.10, align 4, !tbaa !12
+  %arrayidx.12 = getelementptr inbounds nuw i8, ptr %call11, i64 96
+  store <4 x float> <float 1.200000e+01, float 2.400000e+01, float 1.300000e+01, float 2.600000e+01>, ptr %arrayidx.12, align 4, !tbaa !12
+  %arrayidx.14 = getelementptr inbounds nuw i8, ptr %call11, i64 112
+  store <4 x float> <float 1.400000e+01, float 2.800000e+01, float 1.500000e+01, float 3.000000e+01>, ptr %arrayidx.14, align 4, !tbaa !12
+  call void @axpy_pts(i64 noundef 16, ptr noundef nonnull %calloc, ptr noundef nonnull %call11, float noundef 5.000000e-01) #9
+  call void @llvm.memset.p0.i64(ptr noundef nonnull align 4 dereferenceable(128) %calloc, i8 0, i64 128, i1 false)
+  call void @axpy_pts_restricted(i64 noundef 16, ptr noundef nonnull %calloc, ptr noundef nonnull %call11, float noundef 5.000000e-01) #9
+  call void @free(ptr noundef %calloc) #9
+  call void @free(ptr noundef %call11) #9
+  call void @llvm.lifetime.end.p0(i64 16, ptr nonnull %b) #9
+  call void @llvm.lifetime.end.p0(i64 16, ptr nonnull %a) #9
   ret i32 0
 }
 

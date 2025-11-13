@@ -2,5 +2,5 @@
 
 export RUSTUP_TOOLCHAIN=1.91.0
 cargo clean
-cargo build --verbose
+RUSTFLAGS="-C opt-level=3 --emit=llvm-ir" cargo build --release --verbose
 

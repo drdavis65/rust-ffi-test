@@ -6,210 +6,214 @@ target triple = "x86_64-pc-linux-gnu"
 %struct.Pt = type { float, float }
 
 ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
-define dso_local void @process(ptr noundef captures(address_is_null) %0, ptr noundef captures(address_is_null) %1) local_unnamed_addr #0 {
-  %3 = icmp ne ptr %0, null
-  %4 = icmp ne ptr %1, null
-  %5 = and i1 %3, %4
-  br i1 %5, label %6, label %16
+define dso_local void @process(ptr noundef captures(address_is_null) %a, ptr noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+entry:
+  %tobool = icmp ne ptr %a, null
+  %tobool1 = icmp ne ptr %b, null
+  %or.cond = and i1 %tobool, %tobool1
+  br i1 %or.cond, label %if.end, label %return
 
-6:                                                ; preds = %2
-  %7 = load i32, ptr %1, align 8, !tbaa !5
-  %8 = add nsw i32 %7, 1
-  store i32 %8, ptr %1, align 8, !tbaa !5
-  %9 = getelementptr inbounds nuw i8, ptr %0, i64 8
-  %10 = load double, ptr %9, align 8, !tbaa !11
-  %11 = getelementptr inbounds nuw i8, ptr %1, i64 8
-  %12 = load double, ptr %11, align 8, !tbaa !11
-  %13 = fadd double %10, %12
-  store double %13, ptr %11, align 8, !tbaa !11
-  %14 = load double, ptr %9, align 8, !tbaa !11
-  %15 = fmul double %14, 2.000000e+00
-  store double %15, ptr %9, align 8, !tbaa !11
-  br label %16
+if.end:                                           ; preds = %entry
+  %0 = load i32, ptr %b, align 8, !tbaa !5
+  %add = add nsw i32 %0, 1
+  store i32 %add, ptr %b, align 8, !tbaa !5
+  %value = getelementptr inbounds nuw i8, ptr %a, i64 8
+  %1 = load double, ptr %value, align 8, !tbaa !11
+  %value2 = getelementptr inbounds nuw i8, ptr %b, i64 8
+  %2 = load double, ptr %value2, align 8, !tbaa !11
+  %add3 = fadd double %1, %2
+  store double %add3, ptr %value2, align 8, !tbaa !11
+  %3 = load double, ptr %value, align 8, !tbaa !11
+  %mul = fmul double %3, 2.000000e+00
+  store double %mul, ptr %value, align 8, !tbaa !11
+  br label %return
 
-16:                                               ; preds = %2, %6
+return:                                           ; preds = %entry, %if.end
   ret void
 }
 
 ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
-define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %0, ptr noalias noundef captures(address_is_null) %1) local_unnamed_addr #0 {
-  %3 = icmp ne ptr %0, null
-  %4 = icmp ne ptr %1, null
-  %5 = and i1 %3, %4
-  br i1 %5, label %6, label %15
+define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+entry:
+  %tobool = icmp ne ptr %a, null
+  %tobool1 = icmp ne ptr %b, null
+  %or.cond = and i1 %tobool, %tobool1
+  br i1 %or.cond, label %if.end, label %return
 
-6:                                                ; preds = %2
-  %7 = load i32, ptr %1, align 8, !tbaa !5
-  %8 = add nsw i32 %7, 1
-  store i32 %8, ptr %1, align 8, !tbaa !5
-  %9 = getelementptr inbounds nuw i8, ptr %0, i64 8
-  %10 = load double, ptr %9, align 8, !tbaa !11
-  %11 = getelementptr inbounds nuw i8, ptr %1, i64 8
-  %12 = load double, ptr %11, align 8, !tbaa !11
-  %13 = fadd double %10, %12
-  store double %13, ptr %11, align 8, !tbaa !11
-  %14 = fmul double %10, 2.000000e+00
-  store double %14, ptr %9, align 8, !tbaa !11
-  br label %15
+if.end:                                           ; preds = %entry
+  %0 = load i32, ptr %b, align 8, !tbaa !5
+  %add = add nsw i32 %0, 1
+  store i32 %add, ptr %b, align 8, !tbaa !5
+  %value = getelementptr inbounds nuw i8, ptr %a, i64 8
+  %1 = load double, ptr %value, align 8, !tbaa !11
+  %value2 = getelementptr inbounds nuw i8, ptr %b, i64 8
+  %2 = load double, ptr %value2, align 8, !tbaa !11
+  %add3 = fadd double %1, %2
+  store double %add3, ptr %value2, align 8, !tbaa !11
+  %mul = fmul double %1, 2.000000e+00
+  store double %mul, ptr %value, align 8, !tbaa !11
+  br label %return
 
-15:                                               ; preds = %2, %6
+return:                                           ; preds = %entry, %if.end
   ret void
 }
 
 ; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite) uwtable
-define dso_local void @axpy_pts(i64 noundef %0, ptr noundef captures(none) %1, ptr noundef readonly captures(none) %2, float noundef %3) local_unnamed_addr #1 {
-  %5 = icmp eq i64 %0, 0
-  br i1 %5, label %61, label %6
+define dso_local void @axpy_pts(i64 noundef %n, ptr noundef captures(none) %dst, ptr noundef readonly captures(none) %src, float noundef %alpha) local_unnamed_addr #1 {
+entry:
+  %cmp14.not = icmp eq i64 %n, 0
+  br i1 %cmp14.not, label %for.cond.cleanup, label %for.body.preheader
 
-6:                                                ; preds = %4
-  %7 = icmp ult i64 %0, 8
-  br i1 %7, label %39, label %8
+for.body.preheader:                               ; preds = %entry
+  %min.iters.check = icmp ult i64 %n, 8
+  br i1 %min.iters.check, label %for.body.preheader28, label %vector.memcheck
 
-8:                                                ; preds = %6
-  %9 = shl i64 %0, 3
-  %10 = add i64 %9, -4
-  %11 = getelementptr i8, ptr %1, i64 %10
-  %12 = getelementptr i8, ptr %2, i64 %10
-  %13 = getelementptr i8, ptr %1, i64 4
-  %14 = getelementptr i8, ptr %1, i64 %9
-  %15 = getelementptr i8, ptr %2, i64 4
-  %16 = getelementptr i8, ptr %2, i64 %9
-  %17 = icmp ult ptr %1, %12
-  %18 = icmp ult ptr %2, %11
-  %19 = and i1 %17, %18
-  %20 = icmp ult ptr %13, %16
-  %21 = icmp ult ptr %15, %14
-  %22 = and i1 %20, %21
-  %23 = or i1 %19, %22
-  br i1 %23, label %39, label %24
+vector.memcheck:                                  ; preds = %for.body.preheader
+  %0 = shl i64 %n, 3
+  %1 = add i64 %0, -4
+  %scevgep = getelementptr i8, ptr %dst, i64 %1
+  %scevgep16 = getelementptr i8, ptr %src, i64 %1
+  %scevgep17 = getelementptr i8, ptr %dst, i64 4
+  %scevgep18 = getelementptr i8, ptr %dst, i64 %0
+  %scevgep19 = getelementptr i8, ptr %src, i64 4
+  %scevgep20 = getelementptr i8, ptr %src, i64 %0
+  %bound0 = icmp ult ptr %dst, %scevgep16
+  %bound1 = icmp ult ptr %src, %scevgep
+  %found.conflict = and i1 %bound0, %bound1
+  %bound021 = icmp ult ptr %scevgep17, %scevgep20
+  %bound122 = icmp ult ptr %scevgep19, %scevgep18
+  %found.conflict23 = and i1 %bound021, %bound122
+  %conflict.rdx = or i1 %found.conflict, %found.conflict23
+  br i1 %conflict.rdx, label %for.body.preheader28, label %vector.ph
 
-24:                                               ; preds = %8
-  %25 = and i64 %0, -4
-  %26 = insertelement <4 x float> poison, float %3, i64 0
-  %27 = shufflevector <4 x float> %26, <4 x float> poison, <8 x i32> zeroinitializer
-  br label %28
+vector.ph:                                        ; preds = %vector.memcheck
+  %n.vec = and i64 %n, -4
+  %broadcast.splatinsert = insertelement <4 x float> poison, float %alpha, i64 0
+  %2 = shufflevector <4 x float> %broadcast.splatinsert, <4 x float> poison, <8 x i32> zeroinitializer
+  br label %vector.body
 
-28:                                               ; preds = %28, %24
-  %29 = phi i64 [ 0, %24 ], [ %35, %28 ]
-  %30 = getelementptr inbounds nuw %struct.Pt, ptr %2, i64 %29
-  %31 = load <8 x float>, ptr %30, align 4, !tbaa !12
-  %32 = getelementptr inbounds nuw %struct.Pt, ptr %1, i64 %29
-  %33 = load <8 x float>, ptr %32, align 4, !tbaa !12
-  %34 = tail call <8 x float> @llvm.fmuladd.v8f32(<8 x float> %27, <8 x float> %31, <8 x float> %33)
-  store <8 x float> %34, ptr %32, align 4, !tbaa !12
-  %35 = add nuw i64 %29, 4
-  %36 = icmp eq i64 %35, %25
-  br i1 %36, label %37, label %28, !llvm.loop !14
+vector.body:                                      ; preds = %vector.body, %vector.ph
+  %index = phi i64 [ 0, %vector.ph ], [ %index.next, %vector.body ]
+  %3 = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %index
+  %wide.vec = load <8 x float>, ptr %3, align 4, !tbaa !12
+  %4 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %index
+  %wide.vec25 = load <8 x float>, ptr %4, align 4, !tbaa !12
+  %interleaved.vec = tail call <8 x float> @llvm.fmuladd.v8f32(<8 x float> %2, <8 x float> %wide.vec, <8 x float> %wide.vec25)
+  store <8 x float> %interleaved.vec, ptr %4, align 4, !tbaa !12
+  %index.next = add nuw i64 %index, 4
+  %5 = icmp eq i64 %index.next, %n.vec
+  br i1 %5, label %middle.block, label %vector.body, !llvm.loop !14
 
-37:                                               ; preds = %28
-  %38 = icmp eq i64 %0, %25
-  br i1 %38, label %61, label %39
+middle.block:                                     ; preds = %vector.body
+  %cmp.n = icmp eq i64 %n, %n.vec
+  br i1 %cmp.n, label %for.cond.cleanup, label %for.body.preheader28
 
-39:                                               ; preds = %8, %6, %37
-  %40 = phi i64 [ 0, %8 ], [ 0, %6 ], [ %25, %37 ]
-  %41 = or disjoint i64 %40, 1
-  %42 = and i64 %0, 1
-  %43 = icmp eq i64 %42, 0
-  br i1 %43, label %53, label %44
+for.body.preheader28:                             ; preds = %vector.memcheck, %for.body.preheader, %middle.block
+  %i.015.ph = phi i64 [ 0, %vector.memcheck ], [ 0, %for.body.preheader ], [ %n.vec, %middle.block ]
+  %.neg = or disjoint i64 %i.015.ph, 1
+  %xtraiter = and i64 %n, 1
+  %lcmp.mod.not = icmp eq i64 %xtraiter, 0
+  br i1 %lcmp.mod.not, label %for.body.prol.loopexit, label %for.body.prol
 
-44:                                               ; preds = %39
-  %45 = getelementptr inbounds nuw %struct.Pt, ptr %2, i64 %40
-  %46 = getelementptr inbounds nuw %struct.Pt, ptr %1, i64 %40
-  %47 = load <2 x float>, ptr %45, align 4, !tbaa !12
-  %48 = load <2 x float>, ptr %46, align 4, !tbaa !12
-  %49 = insertelement <2 x float> poison, float %3, i64 0
-  %50 = shufflevector <2 x float> %49, <2 x float> poison, <2 x i32> zeroinitializer
-  %51 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %50, <2 x float> %47, <2 x float> %48)
-  store <2 x float> %51, ptr %46, align 4, !tbaa !12
-  %52 = or disjoint i64 %40, 1
-  br label %53
+for.body.prol:                                    ; preds = %for.body.preheader28
+  %arrayidx.prol = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %i.015.ph
+  %arrayidx1.prol = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %i.015.ph
+  %6 = load <2 x float>, ptr %arrayidx.prol, align 4, !tbaa !12
+  %7 = load <2 x float>, ptr %arrayidx1.prol, align 4, !tbaa !12
+  %8 = insertelement <2 x float> poison, float %alpha, i64 0
+  %9 = shufflevector <2 x float> %8, <2 x float> poison, <2 x i32> zeroinitializer
+  %10 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %9, <2 x float> %6, <2 x float> %7)
+  store <2 x float> %10, ptr %arrayidx1.prol, align 4, !tbaa !12
+  %inc.prol = or disjoint i64 %i.015.ph, 1
+  br label %for.body.prol.loopexit
 
-53:                                               ; preds = %44, %39
-  %54 = phi i64 [ %40, %39 ], [ %52, %44 ]
-  %55 = icmp eq i64 %0, %41
-  br i1 %55, label %61, label %56
+for.body.prol.loopexit:                           ; preds = %for.body.prol, %for.body.preheader28
+  %i.015.unr = phi i64 [ %i.015.ph, %for.body.preheader28 ], [ %inc.prol, %for.body.prol ]
+  %11 = icmp eq i64 %n, %.neg
+  br i1 %11, label %for.cond.cleanup, label %for.body.preheader28.new
 
-56:                                               ; preds = %53
-  %57 = insertelement <2 x float> poison, float %3, i64 0
-  %58 = shufflevector <2 x float> %57, <2 x float> poison, <2 x i32> zeroinitializer
-  %59 = insertelement <2 x float> poison, float %3, i64 0
-  %60 = shufflevector <2 x float> %59, <2 x float> poison, <2 x i32> zeroinitializer
-  br label %62
+for.body.preheader28.new:                         ; preds = %for.body.prol.loopexit
+  %12 = insertelement <2 x float> poison, float %alpha, i64 0
+  %13 = shufflevector <2 x float> %12, <2 x float> poison, <2 x i32> zeroinitializer
+  %14 = insertelement <2 x float> poison, float %alpha, i64 0
+  %15 = shufflevector <2 x float> %14, <2 x float> poison, <2 x i32> zeroinitializer
+  br label %for.body
 
-61:                                               ; preds = %53, %62, %37, %4
+for.cond.cleanup:                                 ; preds = %for.body.prol.loopexit, %for.body, %middle.block, %entry
   ret void
 
-62:                                               ; preds = %62, %56
-  %63 = phi i64 [ %54, %56 ], [ %75, %62 ]
-  %64 = getelementptr inbounds nuw %struct.Pt, ptr %2, i64 %63
-  %65 = getelementptr inbounds nuw %struct.Pt, ptr %1, i64 %63
-  %66 = load <2 x float>, ptr %64, align 4, !tbaa !12
-  %67 = load <2 x float>, ptr %65, align 4, !tbaa !12
-  %68 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %58, <2 x float> %66, <2 x float> %67)
-  store <2 x float> %68, ptr %65, align 4, !tbaa !12
-  %69 = add nuw i64 %63, 1
-  %70 = getelementptr inbounds nuw %struct.Pt, ptr %2, i64 %69
-  %71 = getelementptr inbounds nuw %struct.Pt, ptr %1, i64 %69
-  %72 = load <2 x float>, ptr %70, align 4, !tbaa !12
-  %73 = load <2 x float>, ptr %71, align 4, !tbaa !12
-  %74 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %60, <2 x float> %72, <2 x float> %73)
-  store <2 x float> %74, ptr %71, align 4, !tbaa !12
-  %75 = add nuw i64 %63, 2
-  %76 = icmp eq i64 %75, %0
-  br i1 %76, label %61, label %62, !llvm.loop !18
+for.body:                                         ; preds = %for.body, %for.body.preheader28.new
+  %i.015 = phi i64 [ %i.015.unr, %for.body.preheader28.new ], [ %inc.1, %for.body ]
+  %arrayidx = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %i.015
+  %arrayidx1 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %i.015
+  %16 = load <2 x float>, ptr %arrayidx, align 4, !tbaa !12
+  %17 = load <2 x float>, ptr %arrayidx1, align 4, !tbaa !12
+  %18 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %13, <2 x float> %16, <2 x float> %17)
+  store <2 x float> %18, ptr %arrayidx1, align 4, !tbaa !12
+  %inc = add nuw i64 %i.015, 1
+  %arrayidx.1 = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %inc
+  %arrayidx1.1 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %inc
+  %19 = load <2 x float>, ptr %arrayidx.1, align 4, !tbaa !12
+  %20 = load <2 x float>, ptr %arrayidx1.1, align 4, !tbaa !12
+  %21 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %15, <2 x float> %19, <2 x float> %20)
+  store <2 x float> %21, ptr %arrayidx1.1, align 4, !tbaa !12
+  %inc.1 = add nuw i64 %i.015, 2
+  %exitcond.not.1 = icmp eq i64 %inc.1, %n
+  br i1 %exitcond.not.1, label %for.cond.cleanup, label %for.body, !llvm.loop !18
 }
 
 ; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite) uwtable
-define dso_local void @axpy_pts_restricted(i64 noundef %0, ptr noalias noundef captures(none) %1, ptr noalias noundef readonly captures(none) %2, float noundef %3) local_unnamed_addr #1 {
-  %5 = icmp eq i64 %0, 0
-  br i1 %5, label %27, label %6
+define dso_local void @axpy_pts_restricted(i64 noundef %n, ptr noalias noundef captures(none) %dst, ptr noalias noundef readonly captures(none) %src, float noundef %alpha) local_unnamed_addr #1 {
+entry:
+  %cmp14.not = icmp eq i64 %n, 0
+  br i1 %cmp14.not, label %for.cond.cleanup, label %for.body.preheader
 
-6:                                                ; preds = %4
-  %7 = icmp ult i64 %0, 4
-  br i1 %7, label %23, label %8
+for.body.preheader:                               ; preds = %entry
+  %min.iters.check = icmp ult i64 %n, 4
+  br i1 %min.iters.check, label %for.body.preheader20, label %vector.ph
 
-8:                                                ; preds = %6
-  %9 = and i64 %0, -4
-  %10 = insertelement <4 x float> poison, float %3, i64 0
-  %11 = shufflevector <4 x float> %10, <4 x float> poison, <8 x i32> zeroinitializer
-  br label %12
+vector.ph:                                        ; preds = %for.body.preheader
+  %n.vec = and i64 %n, -4
+  %broadcast.splatinsert = insertelement <4 x float> poison, float %alpha, i64 0
+  %0 = shufflevector <4 x float> %broadcast.splatinsert, <4 x float> poison, <8 x i32> zeroinitializer
+  br label %vector.body
 
-12:                                               ; preds = %12, %8
-  %13 = phi i64 [ 0, %8 ], [ %19, %12 ]
-  %14 = getelementptr inbounds nuw %struct.Pt, ptr %2, i64 %13
-  %15 = load <8 x float>, ptr %14, align 4, !tbaa !12
-  %16 = getelementptr inbounds nuw %struct.Pt, ptr %1, i64 %13
-  %17 = load <8 x float>, ptr %16, align 4, !tbaa !12
-  %18 = tail call <8 x float> @llvm.fmuladd.v8f32(<8 x float> %11, <8 x float> %15, <8 x float> %17)
-  store <8 x float> %18, ptr %16, align 4, !tbaa !12
-  %19 = add nuw i64 %13, 4
-  %20 = icmp eq i64 %19, %9
-  br i1 %20, label %21, label %12, !llvm.loop !19
+vector.body:                                      ; preds = %vector.body, %vector.ph
+  %index = phi i64 [ 0, %vector.ph ], [ %index.next, %vector.body ]
+  %1 = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %index
+  %wide.vec = load <8 x float>, ptr %1, align 4, !tbaa !12
+  %2 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %index
+  %wide.vec17 = load <8 x float>, ptr %2, align 4, !tbaa !12
+  %interleaved.vec = tail call <8 x float> @llvm.fmuladd.v8f32(<8 x float> %0, <8 x float> %wide.vec, <8 x float> %wide.vec17)
+  store <8 x float> %interleaved.vec, ptr %2, align 4, !tbaa !12
+  %index.next = add nuw i64 %index, 4
+  %3 = icmp eq i64 %index.next, %n.vec
+  br i1 %3, label %middle.block, label %vector.body, !llvm.loop !19
 
-21:                                               ; preds = %12
-  %22 = icmp eq i64 %0, %9
-  br i1 %22, label %27, label %23
+middle.block:                                     ; preds = %vector.body
+  %cmp.n = icmp eq i64 %n, %n.vec
+  br i1 %cmp.n, label %for.cond.cleanup, label %for.body.preheader20
 
-23:                                               ; preds = %6, %21
-  %24 = phi i64 [ 0, %6 ], [ %9, %21 ]
-  %25 = insertelement <2 x float> poison, float %3, i64 0
-  %26 = shufflevector <2 x float> %25, <2 x float> poison, <2 x i32> zeroinitializer
-  br label %28
+for.body.preheader20:                             ; preds = %for.body.preheader, %middle.block
+  %i.015.ph = phi i64 [ 0, %for.body.preheader ], [ %n.vec, %middle.block ]
+  %4 = insertelement <2 x float> poison, float %alpha, i64 0
+  %5 = shufflevector <2 x float> %4, <2 x float> poison, <2 x i32> zeroinitializer
+  br label %for.body
 
-27:                                               ; preds = %28, %21, %4
+for.cond.cleanup:                                 ; preds = %for.body, %middle.block, %entry
   ret void
 
-28:                                               ; preds = %23, %28
-  %29 = phi i64 [ %35, %28 ], [ %24, %23 ]
-  %30 = getelementptr inbounds nuw %struct.Pt, ptr %2, i64 %29
-  %31 = getelementptr inbounds nuw %struct.Pt, ptr %1, i64 %29
-  %32 = load <2 x float>, ptr %30, align 4, !tbaa !12
-  %33 = load <2 x float>, ptr %31, align 4, !tbaa !12
-  %34 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %26, <2 x float> %32, <2 x float> %33)
-  store <2 x float> %34, ptr %31, align 4, !tbaa !12
-  %35 = add nuw i64 %29, 1
-  %36 = icmp eq i64 %35, %0
-  br i1 %36, label %27, label %28, !llvm.loop !20
+for.body:                                         ; preds = %for.body.preheader20, %for.body
+  %i.015 = phi i64 [ %inc, %for.body ], [ %i.015.ph, %for.body.preheader20 ]
+  %arrayidx = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %i.015
+  %arrayidx1 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %i.015
+  %6 = load <2 x float>, ptr %arrayidx, align 4, !tbaa !12
+  %7 = load <2 x float>, ptr %arrayidx1, align 4, !tbaa !12
+  %8 = tail call <2 x float> @llvm.fmuladd.v2f32(<2 x float> %5, <2 x float> %6, <2 x float> %7)
+  store <2 x float> %8, ptr %arrayidx1, align 4, !tbaa !12
+  %inc = add nuw i64 %i.015, 1
+  %exitcond.not = icmp eq i64 %inc, %n
+  br i1 %exitcond.not, label %for.cond.cleanup, label %for.body, !llvm.loop !20
 }
 
 ; Function Attrs: nocallback nofree nosync nounwind speculatable willreturn memory(none)
