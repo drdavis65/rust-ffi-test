@@ -1,0 +1,1164 @@
+Found 108 dump files.
+
+===== dump_000.ll → dump_001.ll =====
+--- dump_000.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_001.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After Annotation2MetadataPass on [module] ***
++; *** IR Dump After ForceFunctionAttrsPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_001.ll → dump_002.ll =====
+--- dump_001.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_002.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ForceFunctionAttrsPass on [module] ***
++; *** IR Dump After AssignmentTrackingPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_002.ll → dump_003.ll =====
+--- dump_002.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_003.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After AssignmentTrackingPass on [module] ***
++; *** IR Dump After InferFunctionAttrsPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_003.ll → dump_004.ll =====
+--- dump_003.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_004.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InferFunctionAttrsPass on [module] ***
++; *** IR Dump After CoroEarlyPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_004.ll → dump_005.ll =====
+--- dump_004.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_005.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,17 +1,17 @@
+-; *** IR Dump After CoroEarlyPass on [module] ***
++; *** IR Dump After EntryExitInstrumenterPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+   %a.addr = alloca ptr, align 8
+   %b.addr = alloca ptr, align 8
+-  store ptr %a, ptr %a.addr, align 8, !tbaa !5
+-  store ptr %b, ptr %b.addr, align 8, !tbaa !5
+-  %0 = load ptr, ptr %a.addr, align 8, !tbaa !5
++  store ptr %a, ptr %a.addr, align 8, !tbaa !12
++  store ptr %b, ptr %b.addr, align 8, !tbaa !12
++  %0 = load ptr, ptr %a.addr, align 8, !tbaa !12
+   %tobool = icmp ne ptr %0, null
+   br i1 %tobool, label %lor.lhs.false, label %if.then
+ 
+ lor.lhs.false:                                    ; preds = %entry
+-  %1 = load ptr, ptr %b.addr, align 8, !tbaa !5
++  %1 = load ptr, ptr %b.addr, align 8, !tbaa !12
+   %tobool1 = icmp ne ptr %1, null
+   br i1 %tobool1, label %if.end, label %if.then
+ 
+@@ -19,24 +19,24 @@
+   br label %return
+ 
+ if.end:                                           ; preds = %lor.lhs.false
+-  %2 = load ptr, ptr %b.addr, align 8, !tbaa !5
++  %2 = load ptr, ptr %b.addr, align 8, !tbaa !12
+   %id = getelementptr inbounds nuw %struct.Foo, ptr %2, i32 0, i32 0
+-  %3 = load i32, ptr %id, align 8, !tbaa !9
++  %3 = load i32, ptr %id, align 8, !tbaa !5
+   %add = add nsw i32 %3, 1
+-  store i32 %add, ptr %id, align 8, !tbaa !9
+-  %4 = load ptr, ptr %a.addr, align 8, !tbaa !5
++  store i32 %add, ptr %id, align 8, !tbaa !5
++  %4 = load ptr, ptr %a.addr, align 8, !tbaa !12
+   %value = getelementptr inbounds nuw %struct.Foo, ptr %4, i32 0, i32 1
+-  %5 = load double, ptr %value, align 8, !tbaa !13
+-  %6 = load ptr, ptr %b.addr, align 8, !tbaa !5
++  %5 = load double, ptr %value, align 8, !tbaa !11
++  %6 = load ptr, ptr %b.addr, align 8, !tbaa !12
+   %value2 = getelementptr inbounds nuw %struct.Foo, ptr %6, i32 0, i32 1
+-  %7 = load double, ptr %value2, align 8, !tbaa !13
++  %7 = load double, ptr %value2, align 8, !tbaa !11
+   %add3 = fadd double %7, %5
+-  store double %add3, ptr %value2, align 8, !tbaa !13
+-  %8 = load ptr, ptr %a.addr, align 8, !tbaa !5
++  store double %add3, ptr %value2, align 8, !tbaa !11
++  %8 = load ptr, ptr %a.addr, align 8, !tbaa !12
+   %value4 = getelementptr inbounds nuw %struct.Foo, ptr %8, i32 0, i32 1
+-  %9 = load double, ptr %value4, align 8, !tbaa !13
++  %9 = load double, ptr %value4, align 8, !tbaa !11
+   %mul = fmul double %9, 2.000000e+00
+-  store double %mul, ptr %value4, align 8, !tbaa !13
++  store double %mul, ptr %value4, align 8, !tbaa !11
+   br label %return
+ 
+ return:                                           ; preds = %if.end, %if.then
+===== dump_005.ll → dump_006.ll =====
+--- dump_005.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_006.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After EntryExitInstrumenterPass on process_restricted ***
++; *** IR Dump After LowerExpectIntrinsicPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_006.ll → dump_007.ll =====
+--- dump_006.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_007.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LowerExpectIntrinsicPass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+@@ -8,17 +8,12 @@
+   store ptr %b, ptr %b.addr, align 8, !tbaa !12
+   %0 = load ptr, ptr %a.addr, align 8, !tbaa !12
+   %tobool = icmp ne ptr %0, null
+-  br i1 %tobool, label %lor.lhs.false, label %if.then
+-
+-lor.lhs.false:                                    ; preds = %entry
+-  %1 = load ptr, ptr %b.addr, align 8, !tbaa !12
++  %1 = load ptr, ptr %b.addr, align 8
+   %tobool1 = icmp ne ptr %1, null
+-  br i1 %tobool1, label %if.end, label %if.then
+-
+-if.then:                                          ; preds = %lor.lhs.false, %entry
+-  br label %return
++  %or.cond = select i1 %tobool, i1 %tobool1, i1 false
++  br i1 %or.cond, label %if.end, label %return
+ 
+-if.end:                                           ; preds = %lor.lhs.false
++if.end:                                           ; preds = %entry
+   %2 = load ptr, ptr %b.addr, align 8, !tbaa !12
+   %id = getelementptr inbounds nuw %struct.Foo, ptr %2, i32 0, i32 0
+   %3 = load i32, ptr %id, align 8, !tbaa !5
+@@ -39,6 +34,6 @@
+   store double %mul, ptr %value4, align 8, !tbaa !11
+   br label %return
+ 
+-return:                                           ; preds = %if.end, %if.then
++return:                                           ; preds = %entry, %if.end
+   ret void
+ }
+===== dump_007.ll → dump_008.ll =====
+--- dump_007.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_008.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,36 +1,26 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After SROAPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+-  %a.addr = alloca ptr, align 8
+-  %b.addr = alloca ptr, align 8
+-  store ptr %a, ptr %a.addr, align 8, !tbaa !12
+-  store ptr %b, ptr %b.addr, align 8, !tbaa !12
+-  %0 = load ptr, ptr %a.addr, align 8, !tbaa !12
+-  %tobool = icmp ne ptr %0, null
+-  %1 = load ptr, ptr %b.addr, align 8
+-  %tobool1 = icmp ne ptr %1, null
++  %tobool = icmp ne ptr %a, null
++  %tobool1 = icmp ne ptr %b, null
+   %or.cond = select i1 %tobool, i1 %tobool1, i1 false
+   br i1 %or.cond, label %if.end, label %return
+ 
+ if.end:                                           ; preds = %entry
+-  %2 = load ptr, ptr %b.addr, align 8, !tbaa !12
+-  %id = getelementptr inbounds nuw %struct.Foo, ptr %2, i32 0, i32 0
+-  %3 = load i32, ptr %id, align 8, !tbaa !5
+-  %add = add nsw i32 %3, 1
++  %id = getelementptr inbounds nuw %struct.Foo, ptr %b, i32 0, i32 0
++  %0 = load i32, ptr %id, align 8, !tbaa !5
++  %add = add nsw i32 %0, 1
+   store i32 %add, ptr %id, align 8, !tbaa !5
+-  %4 = load ptr, ptr %a.addr, align 8, !tbaa !12
+-  %value = getelementptr inbounds nuw %struct.Foo, ptr %4, i32 0, i32 1
+-  %5 = load double, ptr %value, align 8, !tbaa !11
+-  %6 = load ptr, ptr %b.addr, align 8, !tbaa !12
+-  %value2 = getelementptr inbounds nuw %struct.Foo, ptr %6, i32 0, i32 1
+-  %7 = load double, ptr %value2, align 8, !tbaa !11
+-  %add3 = fadd double %7, %5
++  %value = getelementptr inbounds nuw %struct.Foo, ptr %a, i32 0, i32 1
++  %1 = load double, ptr %value, align 8, !tbaa !11
++  %value2 = getelementptr inbounds nuw %struct.Foo, ptr %b, i32 0, i32 1
++  %2 = load double, ptr %value2, align 8, !tbaa !11
++  %add3 = fadd double %2, %1
+   store double %add3, ptr %value2, align 8, !tbaa !11
+-  %8 = load ptr, ptr %a.addr, align 8, !tbaa !12
+-  %value4 = getelementptr inbounds nuw %struct.Foo, ptr %8, i32 0, i32 1
+-  %9 = load double, ptr %value4, align 8, !tbaa !11
+-  %mul = fmul double %9, 2.000000e+00
++  %value4 = getelementptr inbounds nuw %struct.Foo, ptr %a, i32 0, i32 1
++  %3 = load double, ptr %value4, align 8, !tbaa !11
++  %mul = fmul double %3, 2.000000e+00
+   store double %mul, ptr %value4, align 8, !tbaa !11
+   br label %return
+ 
+===== dump_008.ll → dump_009.ll =====
+--- dump_008.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_009.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SROAPass on process_restricted ***
++; *** IR Dump After EarlyCSEPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+@@ -8,20 +8,18 @@
+   br i1 %or.cond, label %if.end, label %return
+ 
+ if.end:                                           ; preds = %entry
+-  %id = getelementptr inbounds nuw %struct.Foo, ptr %b, i32 0, i32 0
+-  %0 = load i32, ptr %id, align 8, !tbaa !5
++  %0 = load i32, ptr %b, align 8, !tbaa !5
+   %add = add nsw i32 %0, 1
+-  store i32 %add, ptr %id, align 8, !tbaa !5
++  store i32 %add, ptr %b, align 8, !tbaa !5
+   %value = getelementptr inbounds nuw %struct.Foo, ptr %a, i32 0, i32 1
+   %1 = load double, ptr %value, align 8, !tbaa !11
+   %value2 = getelementptr inbounds nuw %struct.Foo, ptr %b, i32 0, i32 1
+   %2 = load double, ptr %value2, align 8, !tbaa !11
+   %add3 = fadd double %2, %1
+   store double %add3, ptr %value2, align 8, !tbaa !11
+-  %value4 = getelementptr inbounds nuw %struct.Foo, ptr %a, i32 0, i32 1
+-  %3 = load double, ptr %value4, align 8, !tbaa !11
++  %3 = load double, ptr %value, align 8, !tbaa !11
+   %mul = fmul double %3, 2.000000e+00
+-  store double %mul, ptr %value4, align 8, !tbaa !11
++  store double %mul, ptr %value, align 8, !tbaa !11
+   br label %return
+ 
+ return:                                           ; preds = %entry, %if.end
+===== dump_009.ll → dump_010.ll =====
+--- dump_009.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_010.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After EarlyCSEPass on process_restricted ***
++; *** IR Dump After CallSiteSplittingPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_010.ll → dump_011.ll =====
+--- dump_010.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_011.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CallSiteSplittingPass on process_restricted ***
++; *** IR Dump After OpenMPOptPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_011.ll → dump_012.ll =====
+--- dump_011.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_012.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After OpenMPOptPass on [module] ***
++; *** IR Dump After IPSCCPPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_012.ll → dump_013.ll =====
+--- dump_012.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_013.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After IPSCCPPass on [module] ***
++; *** IR Dump After CalledValuePropagationPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
+ entry:
+===== dump_013.ll → dump_014.ll =====
+--- dump_013.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_014.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,6 +1,6 @@
+-; *** IR Dump After CalledValuePropagationPass on [module] ***
++; *** IR Dump After GlobalOptPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+-define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) #0 {
++define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+   %tobool = icmp ne ptr %a, null
+   %tobool1 = icmp ne ptr %b, null
+===== dump_014.ll → dump_015.ll =====
+--- dump_014.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_015.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After GlobalOptPass on [module] ***
++; *** IR Dump After PromotePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+===== dump_015.ll → dump_016.ll =====
+--- dump_015.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_016.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,24 +1,23 @@
+-; *** IR Dump After PromotePass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+   %tobool = icmp ne ptr %a, null
+   %tobool1 = icmp ne ptr %b, null
+-  %or.cond = select i1 %tobool, i1 %tobool1, i1 false
++  %or.cond = and i1 %tobool, %tobool1
+   br i1 %or.cond, label %if.end, label %return
+ 
+ if.end:                                           ; preds = %entry
+   %0 = load i32, ptr %b, align 8, !tbaa !5
+   %add = add nsw i32 %0, 1
+   store i32 %add, ptr %b, align 8, !tbaa !5
+-  %value = getelementptr inbounds nuw %struct.Foo, ptr %a, i32 0, i32 1
++  %value = getelementptr inbounds nuw i8, ptr %a, i64 8
+   %1 = load double, ptr %value, align 8, !tbaa !11
+-  %value2 = getelementptr inbounds nuw %struct.Foo, ptr %b, i32 0, i32 1
++  %value2 = getelementptr inbounds nuw i8, ptr %b, i64 8
+   %2 = load double, ptr %value2, align 8, !tbaa !11
+   %add3 = fadd double %2, %1
+   store double %add3, ptr %value2, align 8, !tbaa !11
+-  %3 = load double, ptr %value, align 8, !tbaa !11
+-  %mul = fmul double %3, 2.000000e+00
++  %mul = fmul double %1, 2.000000e+00
+   store double %mul, ptr %value, align 8, !tbaa !11
+   br label %return
+ 
+===== dump_016.ll → dump_017.ll =====
+--- dump_016.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_017.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+===== dump_017.ll → dump_018.ll =====
+--- dump_017.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_018.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After AlwaysInlinerPass on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+===== dump_018.ll → dump_019.ll =====
+--- dump_018.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_019.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After AlwaysInlinerPass on [module] ***
++; *** IR Dump After RequireAnalysisPass<llvm::GlobalsAA, llvm::Module, llvm::AnalysisManager<Module>> on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+===== dump_019.ll → dump_020.ll =====
+--- dump_019.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_020.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After RequireAnalysisPass<llvm::GlobalsAA, llvm::Module, llvm::AnalysisManager<Module>> on [module] ***
++; *** IR Dump After InvalidateAnalysisPass<llvm::AAManager> on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+===== dump_020.ll → dump_021.ll =====
+--- dump_020.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_021.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InvalidateAnalysisPass<llvm::AAManager> on process_restricted ***
++; *** IR Dump After RequireAnalysisPass<llvm::ProfileSummaryAnalysis, llvm::Module, llvm::AnalysisManager<Module>> on [module] ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
+ entry:
+===== dump_021.ll → dump_022.ll =====
+--- dump_021.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_022.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,6 +1,6 @@
+-; *** IR Dump After RequireAnalysisPass<llvm::ProfileSummaryAnalysis, llvm::Module, llvm::AnalysisManager<Module>> on [module] ***
++; *** IR Dump After InlinerPass on (process_restricted) ***
+ ; Function Attrs: nounwind uwtable
+-define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #0 {
++define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #1 {
+ entry:
+   %tobool = icmp ne ptr %a, null
+   %tobool1 = icmp ne ptr %b, null
+===== dump_022.ll → dump_023.ll =====
+--- dump_022.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_023.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,6 +1,6 @@
+-; *** IR Dump After InlinerPass on (process_restricted) ***
++; *** IR Dump After PostOrderFunctionAttrsPass on (process_restricted) ***
+ ; Function Attrs: nounwind uwtable
+-define dso_local void @process_restricted(ptr noalias noundef %a, ptr noalias noundef %b) local_unnamed_addr #1 {
++define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+   %tobool = icmp ne ptr %a, null
+   %tobool1 = icmp ne ptr %b, null
+===== dump_023.ll → dump_024.ll =====
+--- dump_023.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_024.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After PostOrderFunctionAttrsPass on (process_restricted) ***
++; *** IR Dump After ArgumentPromotionPass on (process_restricted) ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_024.ll → dump_025.ll =====
+--- dump_024.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_025.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ArgumentPromotionPass on (process_restricted) ***
++; *** IR Dump After OpenMPOptCGSCCPass on (process_restricted) ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_025.ll → dump_026.ll =====
+--- dump_025.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_026.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After OpenMPOptCGSCCPass on (process_restricted) ***
++; *** IR Dump After SROAPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_026.ll → dump_027.ll =====
+--- dump_026.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_027.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SROAPass on process_restricted ***
++; *** IR Dump After EarlyCSEPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_027.ll → dump_028.ll =====
+--- dump_027.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_028.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After EarlyCSEPass on process_restricted ***
++; *** IR Dump After SpeculativeExecutionPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_028.ll → dump_029.ll =====
+--- dump_028.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_029.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SpeculativeExecutionPass on process_restricted ***
++; *** IR Dump After JumpThreadingPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_029.ll → dump_030.ll =====
+--- dump_029.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_030.ll	2025-11-18 00:59:49.974919390 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After JumpThreadingPass on process_restricted ***
++; *** IR Dump After CorrelatedValuePropagationPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_030.ll → dump_031.ll =====
+--- dump_030.ll	2025-11-18 00:59:49.974919390 -0700
++++ dump_031.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CorrelatedValuePropagationPass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_031.ll → dump_032.ll =====
+--- dump_031.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_032.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_032.ll → dump_033.ll =====
+--- dump_032.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_033.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
++; *** IR Dump After AggressiveInstCombinePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_033.ll → dump_034.ll =====
+--- dump_033.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_034.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After AggressiveInstCombinePass on process_restricted ***
++; *** IR Dump After LibCallsShrinkWrapPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_034.ll → dump_035.ll =====
+--- dump_034.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_035.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LibCallsShrinkWrapPass on process_restricted ***
++; *** IR Dump After TailCallElimPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_035.ll → dump_036.ll =====
+--- dump_035.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_036.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After TailCallElimPass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_036.ll → dump_037.ll =====
+--- dump_036.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_037.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After ReassociatePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+@@ -15,7 +15,7 @@
+   %1 = load double, ptr %value, align 8, !tbaa !11
+   %value2 = getelementptr inbounds nuw i8, ptr %b, i64 8
+   %2 = load double, ptr %value2, align 8, !tbaa !11
+-  %add3 = fadd double %2, %1
++  %add3 = fadd double %1, %2
+   store double %add3, ptr %value2, align 8, !tbaa !11
+   %mul = fmul double %1, 2.000000e+00
+   store double %mul, ptr %value, align 8, !tbaa !11
+===== dump_037.ll → dump_038.ll =====
+--- dump_037.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_038.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ReassociatePass on process_restricted ***
++; *** IR Dump After ConstraintEliminationPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_038.ll → dump_039.ll =====
+--- dump_038.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_039.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ConstraintEliminationPass on process_restricted ***
++; *** IR Dump After LoopSimplifyPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_039.ll → dump_040.ll =====
+--- dump_039.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_040.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopSimplifyPass on process_restricted ***
++; *** IR Dump After LCSSAPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_040.ll → dump_041.ll =====
+--- dump_040.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_041.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LCSSAPass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_041.ll → dump_042.ll =====
+--- dump_041.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_042.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_042.ll → dump_043.ll =====
+--- dump_042.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_043.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
++; *** IR Dump After LoopSimplifyPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_043.ll → dump_044.ll =====
+--- dump_043.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_044.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopSimplifyPass on process_restricted ***
++; *** IR Dump After LCSSAPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_044.ll → dump_045.ll =====
+--- dump_044.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_045.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LCSSAPass on process_restricted ***
++; *** IR Dump After SROAPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_045.ll → dump_046.ll =====
+--- dump_045.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_046.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SROAPass on process_restricted ***
++; *** IR Dump After VectorCombinePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_046.ll → dump_047.ll =====
+--- dump_046.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_047.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After VectorCombinePass on process_restricted ***
++; *** IR Dump After MergedLoadStoreMotionPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_047.ll → dump_048.ll =====
+--- dump_047.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_048.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After MergedLoadStoreMotionPass on process_restricted ***
++; *** IR Dump After GVNPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_048.ll → dump_049.ll =====
+--- dump_048.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_049.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After GVNPass on process_restricted ***
++; *** IR Dump After SCCPPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_049.ll → dump_050.ll =====
+--- dump_049.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_050.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SCCPPass on process_restricted ***
++; *** IR Dump After BDCEPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_050.ll → dump_051.ll =====
+--- dump_050.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_051.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After BDCEPass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_051.ll → dump_052.ll =====
+--- dump_051.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_052.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
++; *** IR Dump After JumpThreadingPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_052.ll → dump_053.ll =====
+--- dump_052.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_053.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After JumpThreadingPass on process_restricted ***
++; *** IR Dump After CorrelatedValuePropagationPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_053.ll → dump_054.ll =====
+--- dump_053.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_054.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CorrelatedValuePropagationPass on process_restricted ***
++; *** IR Dump After ADCEPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_054.ll → dump_055.ll =====
+--- dump_054.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_055.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ADCEPass on process_restricted ***
++; *** IR Dump After MemCpyOptPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_055.ll → dump_056.ll =====
+--- dump_055.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_056.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After MemCpyOptPass on process_restricted ***
++; *** IR Dump After DSEPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_056.ll → dump_057.ll =====
+--- dump_056.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_057.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After DSEPass on process_restricted ***
++; *** IR Dump After MoveAutoInitPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_057.ll → dump_058.ll =====
+--- dump_057.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_058.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After MoveAutoInitPass on process_restricted ***
++; *** IR Dump After LoopSimplifyPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_058.ll → dump_059.ll =====
+--- dump_058.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_059.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopSimplifyPass on process_restricted ***
++; *** IR Dump After LCSSAPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_059.ll → dump_060.ll =====
+--- dump_059.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_060.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LCSSAPass on process_restricted ***
++; *** IR Dump After CoroElidePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_060.ll → dump_061.ll =====
+--- dump_060.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_061.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CoroElidePass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_061.ll → dump_062.ll =====
+--- dump_061.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_062.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: nounwind uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
+ entry:
+===== dump_062.ll → dump_063.ll =====
+--- dump_062.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_063.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,6 +1,6 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
+-; Function Attrs: nounwind uwtable
+-define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #1 {
++; *** IR Dump After PostOrderFunctionAttrsPass on (process_restricted) ***
++; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
++define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+   %tobool = icmp ne ptr %a, null
+   %tobool1 = icmp ne ptr %b, null
+===== dump_063.ll → dump_064.ll =====
+--- dump_063.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_064.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After PostOrderFunctionAttrsPass on (process_restricted) ***
++; *** IR Dump After RequireAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis, llvm::Function, llvm::AnalysisManager<Function>> on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_064.ll → dump_065.ll =====
+--- dump_064.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_065.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After RequireAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis, llvm::Function, llvm::AnalysisManager<Function>> on process_restricted ***
++; *** IR Dump After CoroSplitPass on (process_restricted) ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_065.ll → dump_066.ll =====
+--- dump_065.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_066.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CoroSplitPass on (process_restricted) ***
++; *** IR Dump After CoroAnnotationElidePass on (process_restricted) ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_066.ll → dump_067.ll =====
+--- dump_066.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_067.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CoroAnnotationElidePass on (process_restricted) ***
++; *** IR Dump After InvalidateAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis> on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_067.ll → dump_068.ll =====
+--- dump_067.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_068.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InvalidateAnalysisPass<llvm::ShouldNotRunFunctionPassesAnalysis> on process_restricted ***
++; *** IR Dump After DeadArgumentEliminationPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_068.ll → dump_069.ll =====
+--- dump_068.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_069.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After DeadArgumentEliminationPass on [module] ***
++; *** IR Dump After CoroCleanupPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_069.ll → dump_070.ll =====
+--- dump_069.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_070.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CoroCleanupPass on [module] ***
++; *** IR Dump After GlobalOptPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_070.ll → dump_071.ll =====
+--- dump_070.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_071.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After GlobalOptPass on [module] ***
++; *** IR Dump After GlobalDCEPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_071.ll → dump_072.ll =====
+--- dump_071.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_072.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After GlobalDCEPass on [module] ***
++; *** IR Dump After EliminateAvailableExternallyPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_072.ll → dump_073.ll =====
+--- dump_072.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_073.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After EliminateAvailableExternallyPass on [module] ***
++; *** IR Dump After ReversePostOrderFunctionAttrsPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_073.ll → dump_074.ll =====
+--- dump_073.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_074.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ReversePostOrderFunctionAttrsPass on [module] ***
++; *** IR Dump After RecomputeGlobalsAAPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_074.ll → dump_075.ll =====
+--- dump_074.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_075.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After RecomputeGlobalsAAPass on [module] ***
++; *** IR Dump After Float2IntPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_075.ll → dump_076.ll =====
+--- dump_075.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_076.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After Float2IntPass on process_restricted ***
++; *** IR Dump After LowerConstantIntrinsicsPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_076.ll → dump_077.ll =====
+--- dump_076.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_077.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LowerConstantIntrinsicsPass on process_restricted ***
++; *** IR Dump After ControlHeightReductionPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_077.ll → dump_078.ll =====
+--- dump_077.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_078.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ControlHeightReductionPass on process_restricted ***
++; *** IR Dump After LoopSimplifyPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_078.ll → dump_079.ll =====
+--- dump_078.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_079.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopSimplifyPass on process_restricted ***
++; *** IR Dump After LCSSAPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_079.ll → dump_080.ll =====
+--- dump_079.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_080.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LCSSAPass on process_restricted ***
++; *** IR Dump After LoopDistributePass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_080.ll → dump_081.ll =====
+--- dump_080.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_081.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopDistributePass on process_restricted ***
++; *** IR Dump After InjectTLIMappings on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_081.ll → dump_082.ll =====
+--- dump_081.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_082.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InjectTLIMappings on process_restricted ***
++; *** IR Dump After LoopVectorizePass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_082.ll → dump_083.ll =====
+--- dump_082.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_083.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopVectorizePass on process_restricted ***
++; *** IR Dump After InferAlignmentPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_083.ll → dump_084.ll =====
+--- dump_083.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_084.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InferAlignmentPass on process_restricted ***
++; *** IR Dump After LoopLoadEliminationPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_084.ll → dump_085.ll =====
+--- dump_084.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_085.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopLoadEliminationPass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_085.ll → dump_086.ll =====
+--- dump_085.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_086.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_086.ll → dump_087.ll =====
+--- dump_086.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_087.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After SLPVectorizerPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_087.ll → dump_088.ll =====
+--- dump_087.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_088.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SLPVectorizerPass on process_restricted ***
++; *** IR Dump After VectorCombinePass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_088.ll → dump_089.ll =====
+--- dump_088.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_089.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After VectorCombinePass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_089.ll → dump_090.ll =====
+--- dump_089.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_090.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
++; *** IR Dump After LoopUnrollPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_090.ll → dump_091.ll =====
+--- dump_090.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_091.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopUnrollPass on process_restricted ***
++; *** IR Dump After WarnMissedTransformationsPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_091.ll → dump_092.ll =====
+--- dump_091.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_092.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After WarnMissedTransformationsPass on process_restricted ***
++; *** IR Dump After SROAPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_092.ll → dump_093.ll =====
+--- dump_092.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_093.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SROAPass on process_restricted ***
++; *** IR Dump After InferAlignmentPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_093.ll → dump_094.ll =====
+--- dump_093.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_094.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InferAlignmentPass on process_restricted ***
++; *** IR Dump After InstCombinePass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_094.ll → dump_095.ll =====
+--- dump_094.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_095.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstCombinePass on process_restricted ***
++; *** IR Dump After LoopSimplifyPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_095.ll → dump_096.ll =====
+--- dump_095.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_096.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopSimplifyPass on process_restricted ***
++; *** IR Dump After LCSSAPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_096.ll → dump_097.ll =====
+--- dump_096.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_097.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LCSSAPass on process_restricted ***
++; *** IR Dump After AlignmentFromAssumptionsPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_097.ll → dump_098.ll =====
+--- dump_097.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_098.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After AlignmentFromAssumptionsPass on process_restricted ***
++; *** IR Dump After LoopSinkPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_098.ll → dump_099.ll =====
+--- dump_098.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_099.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After LoopSinkPass on process_restricted ***
++; *** IR Dump After InstSimplifyPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_099.ll → dump_100.ll =====
+--- dump_099.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_100.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After InstSimplifyPass on process_restricted ***
++; *** IR Dump After DivRemPairsPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_100.ll → dump_101.ll =====
+--- dump_100.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_101.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After DivRemPairsPass on process_restricted ***
++; *** IR Dump After TailCallElimPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_101.ll → dump_102.ll =====
+--- dump_101.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_102.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After TailCallElimPass on process_restricted ***
++; *** IR Dump After SimplifyCFGPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_102.ll → dump_103.ll =====
+--- dump_102.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_103.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After SimplifyCFGPass on process_restricted ***
++; *** IR Dump After GlobalDCEPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_103.ll → dump_104.ll =====
+--- dump_103.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_104.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After GlobalDCEPass on [module] ***
++; *** IR Dump After ConstantMergePass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_104.ll → dump_105.ll =====
+--- dump_104.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_105.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After ConstantMergePass on [module] ***
++; *** IR Dump After CGProfilePass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_105.ll → dump_106.ll =====
+--- dump_105.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_106.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After CGProfilePass on [module] ***
++; *** IR Dump After RelLookupTableConverterPass on [module] ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
+===== dump_106.ll → dump_107.ll =====
+--- dump_106.ll	2025-11-18 00:59:49.978919456 -0700
++++ dump_107.ll	2025-11-18 00:59:49.978919456 -0700
+@@ -1,4 +1,4 @@
+-; *** IR Dump After RelLookupTableConverterPass on [module] ***
++; *** IR Dump After AnnotationRemarksPass on process_restricted ***
+ ; Function Attrs: mustprogress nofree norecurse nosync nounwind willreturn memory(argmem: readwrite) uwtable
+ define dso_local void @process_restricted(ptr noalias noundef captures(address_is_null) %a, ptr noalias noundef captures(address_is_null) %b) local_unnamed_addr #0 {
+ entry:
