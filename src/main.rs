@@ -15,6 +15,13 @@ pub struct Pt {
     y: c_float,
 }
 
+#[inline(never)]
+pub fn process_r(a: &mut Box<Foo>, b: &mut Box<Foo>) {
+    b.id += 1;
+    b.value += a.value;
+    a.value *= 2.0;
+}
+
 unsafe extern "C" {
     fn process(a: *mut Foo, b: *mut Foo);
     fn process_restricted(a: *mut Foo, b: *mut Foo);
@@ -42,7 +49,12 @@ fn main() {
     let mut b = Box::new(Foo { id: 3, value: 2.2 });
 
     println!("Before: a = {:?}, b = {:?}", a, b);
+    
+    process_r(&mut a, &mut b);
 
+    println!("After:  a = {:?}, b = {:?}", a, b);
+
+    
     // Safe version
 //    process_safe(a.as_mut(), b.as_mut());
 
@@ -52,6 +64,9 @@ fn main() {
 //    unsafe {
 //        process(a_ptr, a_ptr);
 //    }
+
+    println!("Before: a = {:?}, b = {:?}", a, b);
+
     unsafe {
         process_restricted(a_ptr, b_ptr);
     }
