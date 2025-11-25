@@ -1,10 +1,10 @@
 digraph "CFG for 'process_restricted' function" {
 	label="CFG for 'process_restricted' function";
 
-	Node0x55d2f8907e70 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{entry:\l|  %tobool = icmp ne ptr %a, null\l  %tobool1 = icmp ne ptr %b, null\l  %or.cond = and i1 %tobool, %tobool1\l  br i1 %or.cond, label %if.end, label %return\l|{<s0>T|<s1>F}}"];
-	Node0x55d2f8907e70:s0 -> Node0x55d2f8907ed0;
-	Node0x55d2f8907e70:s1 -> Node0x55d2f8908110;
-	Node0x55d2f8907ed0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#be242e70" fontname="Courier",label="{if.end:\l|  %0 = load i32, ptr %b, align 8, !tbaa !5\l  %add = add nsw i32 %0, 1\l  store i32 %add, ptr %b, align 8, !tbaa !5\l  %value = getelementptr inbounds nuw i8, ptr %a, i64 8\l  %1 = load double, ptr %value, align 8, !tbaa !11\l  %value2 = getelementptr inbounds nuw i8, ptr %b, i64 8\l  %2 = load double, ptr %value2, align 8, !tbaa !11\l  %add3 = fadd double %1, %2\l  store double %add3, ptr %value2, align 8, !tbaa !11\l  %mul = fmul double %1, 2.000000e+00\l  store double %mul, ptr %value, align 8, !tbaa !11\l  br label %return\l}"];
-	Node0x55d2f8907ed0 -> Node0x55d2f8908110;
-	Node0x55d2f8908110 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{return:\l|  ret void\l}"];
+	Node0x55a173fa8e10 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{entry:\l|  %tobool = icmp ne ptr %a, null, !dbg !50\l  %tobool1 = icmp ne ptr %b, null\l  %or.cond = and i1 %tobool, %tobool1, !dbg !52\l  br i1 %or.cond, label %if.end, label %return, !dbg !52\l|{<s0>T|<s1>F}}"];
+	Node0x55a173fa8e10:s0 -> Node0x55a173fa8e70;
+	Node0x55a173fa8e10:s1 -> Node0x55a173fa9fb0;
+	Node0x55a173fa8e70 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#be242e70" fontname="Courier",label="{if.end:\l|  %0 = load i32, ptr %b, align 8, !dbg !53, !tbaa !30\l  %add = add nsw i32 %0, 1, !dbg !53\l  store i32 %add, ptr %b, align 8, !dbg !53, !tbaa !30\l  %value = getelementptr inbounds nuw i8, ptr %a, i64 8, !dbg !54\l  %1 = load double, ptr %value, align 8, !dbg !54, !tbaa !37\l  %value2 = getelementptr inbounds nuw i8, ptr %b, i64 8, !dbg !55\l  %2 = load double, ptr %value2, align 8, !dbg !56, !tbaa !37\l  %add3 = fadd double %1, %2, !dbg !56\l  store double %add3, ptr %value2, align 8, !dbg !56, !tbaa !37\l  %mul = fmul double %1, 2.000000e+00, !dbg !57\l  store double %mul, ptr %value, align 8, !dbg !57, !tbaa !37\l  br label %return, !dbg !58\l}"];
+	Node0x55a173fa8e70 -> Node0x55a173fa9fb0;
+	Node0x55a173fa9fb0 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{return:\l|  ret void, !dbg !58\l}"];
 }

@@ -5,3 +5,6 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 export PATH="$HOME/.cargo/bin:$PATH"
 
 rustup default 1.91.1
+wget https://apt.llvm.org/llvm.sh
+
+sudo apt install graphviz

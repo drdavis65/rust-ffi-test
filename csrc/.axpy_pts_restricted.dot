@@ -1,24 +1,24 @@
 digraph "CFG for 'axpy_pts_restricted' function" {
 	label="CFG for 'axpy_pts_restricted' function";
 
-	Node0x55d2f890fe10 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{entry:\l|  %cmp14.not = icmp eq i64 %n, 0\l  br i1 %cmp14.not, label %for.cond.cleanup, label %for.body.preheader\l|{<s0>T|<s1>F}}"];
-	Node0x55d2f890fe10:s0 -> Node0x55d2f890fe70;
-	Node0x55d2f890fe10:s1 -> Node0x55d2f8910010;
-	Node0x55d2f8910010 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d24b4070" fontname="Courier",label="{for.body.preheader:\l|  %min.iters.check = icmp ult i64 %n, 4\l  br i1 %min.iters.check, label %for.body.preheader20, label %vector.ph\l|{<s0>T|<s1>F}}"];
-	Node0x55d2f8910010:s0 -> Node0x55d2f89100a0;
-	Node0x55d2f8910010:s1 -> Node0x55d2f8910350;
-	Node0x55d2f8910350 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d8564670" fontname="Courier",label="{vector.ph:\l|  %n.vec = and i64 %n, -4\l  %broadcast.splatinsert = insertelement \<4 x float\> poison, float %alpha, i64\l... 0\l  %0 = shufflevector \<4 x float\> %broadcast.splatinsert, \<4 x float\> poison,\l... \<8 x i32\> zeroinitializer\l  br label %vector.body\l}"];
-	Node0x55d2f8910350 -> Node0x55d2f890a440;
-	Node0x55d2f890a440 [shape=record,color="#b70d28ff", style=filled, fillcolor="#bb1b2c70" fontname="Courier",label="{vector.body:\l|  %index = phi i64 [ 0, %vector.ph ], [ %index.next, %vector.body ]\l  %1 = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %index\l  %wide.vec = load \<8 x float\>, ptr %1, align 4, !tbaa !12\l  %2 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %index\l  %wide.vec17 = load \<8 x float\>, ptr %2, align 4, !tbaa !12\l  %interleaved.vec = tail call \<8 x float\> @llvm.fmuladd.v8f32(\<8 x float\> %0,\l... \<8 x float\> %wide.vec, \<8 x float\> %wide.vec17)\l  store \<8 x float\> %interleaved.vec, ptr %2, align 4, !tbaa !12\l  %index.next = add nuw i64 %index, 4\l  %3 = icmp eq i64 %index.next, %n.vec\l  br i1 %3, label %middle.block, label %vector.body, !llvm.loop !19\l|{<s0>T|<s1>F}}"];
-	Node0x55d2f890a440:s0 -> Node0x55d2f890a9a0;
-	Node0x55d2f890a440:s1 -> Node0x55d2f890a440;
-	Node0x55d2f890a9a0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d8564670" fontname="Courier",label="{middle.block:\l|  %cmp.n = icmp eq i64 %n, %n.vec\l  br i1 %cmp.n, label %for.cond.cleanup, label %for.body.preheader20\l|{<s0>T|<s1>F}}"];
-	Node0x55d2f890a9a0:s0 -> Node0x55d2f890fe70;
-	Node0x55d2f890a9a0:s1 -> Node0x55d2f89100a0;
-	Node0x55d2f89100a0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{for.body.preheader20:\l|  %i.015.ph = phi i64 [ 0, %for.body.preheader ], [ %n.vec, %middle.block ]\l  %4 = insertelement \<2 x float\> poison, float %alpha, i64 0\l  %5 = shufflevector \<2 x float\> %4, \<2 x float\> poison, \<2 x i32\>\l... zeroinitializer\l  br label %for.body\l}"];
-	Node0x55d2f89100a0 -> Node0x55d2f8911d80;
-	Node0x55d2f890fe70 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{for.cond.cleanup:\l|  ret void\l}"];
-	Node0x55d2f8911d80 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{for.body:\l|  %i.015 = phi i64 [ %inc, %for.body ], [ %i.015.ph, %for.body.preheader20 ]\l  %arrayidx = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %i.015\l  %arrayidx1 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %i.015\l  %6 = load \<2 x float\>, ptr %arrayidx, align 4, !tbaa !12\l  %7 = load \<2 x float\>, ptr %arrayidx1, align 4, !tbaa !12\l  %8 = tail call \<2 x float\> @llvm.fmuladd.v2f32(\<2 x float\> %5, \<2 x float\>\l... %6, \<2 x float\> %7)\l  store \<2 x float\> %8, ptr %arrayidx1, align 4, !tbaa !12\l  %inc = add nuw i64 %i.015, 1\l  %exitcond.not = icmp eq i64 %inc, %n\l  br i1 %exitcond.not, label %for.cond.cleanup, label %for.body, !llvm.loop !20\l|{<s0>T|<s1>F}}"];
-	Node0x55d2f8911d80:s0 -> Node0x55d2f890fe70;
-	Node0x55d2f8911d80:s1 -> Node0x55d2f8911d80;
+	Node0x55a173fbaf10 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{entry:\l|  %cmp14.not = icmp eq i64 %n, 0, !dbg !116\l  br i1 %cmp14.not, label %for.cond.cleanup, label %for.body.preheader, !dbg\l... !118\l|{<s0>T|<s1>F}}"];
+	Node0x55a173fbaf10:s0 -> Node0x55a173fbaf70;
+	Node0x55a173fbaf10:s1 -> Node0x55a173fbcbc0;
+	Node0x55a173fbcbc0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d24b4070" fontname="Courier",label="{for.body.preheader:\l|  %min.iters.check = icmp ult i64 %n, 4, !dbg !118\l  br i1 %min.iters.check, label %for.body.preheader20, label %vector.ph, !dbg\l... !118\l|{<s0>T|<s1>F}}"];
+	Node0x55a173fbcbc0:s0 -> Node0x55a173fbcc50;
+	Node0x55a173fbcbc0:s1 -> Node0x55a173fb12f0;
+	Node0x55a173fb12f0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d8564670" fontname="Courier",label="{vector.ph:\l|  %n.vec = and i64 %n, -4, !dbg !118\l  %broadcast.splatinsert = insertelement \<4 x float\> poison, float %alpha, i64\l... 0\l  %0 = shufflevector \<4 x float\> %broadcast.splatinsert, \<4 x float\> poison,\l... \<8 x i32\> zeroinitializer\l  br label %vector.body, !dbg !118\l}"];
+	Node0x55a173fb12f0 -> Node0x55a173fb1350;
+	Node0x55a173fb1350 [shape=record,color="#b70d28ff", style=filled, fillcolor="#bb1b2c70" fontname="Courier",label="{vector.body:\l|  %index = phi i64 [ 0, %vector.ph ], [ %index.next, %vector.body ], !dbg\l... !119\l  %1 = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %index, !dbg !120\l  %wide.vec = load \<8 x float\>, ptr %1, align 4, !dbg !122, !tbaa !90\l  %2 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %index, !dbg !123\l  %wide.vec17 = load \<8 x float\>, ptr %2, align 4, !dbg !124, !tbaa !90\l  %interleaved.vec = tail call \<8 x float\> @llvm.fmuladd.v8f32(\<8 x float\> %0,\l... \<8 x float\> %wide.vec, \<8 x float\> %wide.vec17), !dbg !125\l  store \<8 x float\> %interleaved.vec, ptr %2, align 4, !dbg !125, !tbaa !90\l  %index.next = add nuw i64 %index, 4, !dbg !119\l  %3 = icmp eq i64 %index.next, %n.vec, !dbg !119\l  br i1 %3, label %middle.block, label %vector.body, !dbg !119, !llvm.loop !126\l|{<s0>T|<s1>F}}"];
+	Node0x55a173fb1350:s0 -> Node0x55a173fb18b0;
+	Node0x55a173fb1350:s1 -> Node0x55a173fb1350;
+	Node0x55a173fb18b0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d8564670" fontname="Courier",label="{middle.block:\l|  %cmp.n = icmp eq i64 %n, %n.vec, !dbg !118\l  br i1 %cmp.n, label %for.cond.cleanup, label %for.body.preheader20, !dbg !118\l|{<s0>T|<s1>F}}"];
+	Node0x55a173fb18b0:s0 -> Node0x55a173fbaf70;
+	Node0x55a173fb18b0:s1 -> Node0x55a173fbcc50;
+	Node0x55a173fbcc50 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{for.body.preheader20:\l|  %i.015.ph = phi i64 [ 0, %for.body.preheader ], [ %n.vec, %middle.block ]\l  %4 = insertelement \<2 x float\> poison, float %alpha, i64 0\l  %5 = shufflevector \<2 x float\> %4, \<2 x float\> poison, \<2 x i32\>\l... zeroinitializer\l  br label %for.body, !dbg !118\l}"];
+	Node0x55a173fbcc50 -> Node0x55a173fc0430;
+	Node0x55a173fbaf70 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{for.cond.cleanup:\l|  ret void, !dbg !128\l}"];
+	Node0x55a173fc0430 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{for.body:\l|  %i.015 = phi i64 [ %inc, %for.body ], [ %i.015.ph, %for.body.preheader20 ]\l  %arrayidx = getelementptr inbounds nuw %struct.Pt, ptr %src, i64 %i.015,\l... !dbg !120\l  %arrayidx1 = getelementptr inbounds nuw %struct.Pt, ptr %dst, i64 %i.015,\l... !dbg !123\l  %6 = load \<2 x float\>, ptr %arrayidx, align 4, !dbg !122, !tbaa !90\l  %7 = load \<2 x float\>, ptr %arrayidx1, align 4, !dbg !124, !tbaa !90\l  %8 = tail call \<2 x float\> @llvm.fmuladd.v2f32(\<2 x float\> %5, \<2 x float\>\l... %6, \<2 x float\> %7), !dbg !124\l  store \<2 x float\> %8, ptr %arrayidx1, align 4, !dbg !124, !tbaa !90\l  %inc = add nuw i64 %i.015, 1, !dbg !119\l  %exitcond.not = icmp eq i64 %inc, %n, !dbg !116\l  br i1 %exitcond.not, label %for.cond.cleanup, label %for.body, !dbg !118,\l... !llvm.loop !129\l|{<s0>T|<s1>F}}"];
+	Node0x55a173fc0430:s0 -> Node0x55a173fbaf70;
+	Node0x55a173fc0430:s1 -> Node0x55a173fc0430;
 }
