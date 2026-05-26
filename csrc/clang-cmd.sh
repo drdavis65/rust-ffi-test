@@ -1,4 +1,4 @@
-#1/usr/bin/env bash
+#!/usr/bin/env bash
 
 clang-21 -O3 -S -emit-llvm -fno-discard-value-names main.c mylib.c -mllvm -print-after-all -mllvm -filter-print-funcs="$1" 2> "${1}_afterall.log"
 
